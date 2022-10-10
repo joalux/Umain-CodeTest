@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Filter: Hashable {
+struct Filter: Hashable, Identifiable {
     let id: String
     let name: String
     let image_url: String

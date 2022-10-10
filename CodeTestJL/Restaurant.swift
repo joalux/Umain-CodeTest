@@ -14,38 +14,25 @@ struct Restaurants: Codable {
 
 // MARK: - Restaurant
 struct Restaurant: Codable, Hashable {
-    //let id: String
+    var id: String
     let imageURL: String
     let filterIDS: [String]
     let deliveryTimeMinutes: Int
     let rating: Double
     let name: String
+    var isOpen = false
 
     enum CodingKeys: String, CodingKey {
-       // case id
+        case id = "id"
         case imageURL = "image_url"
         case filterIDS = "filterIds"
         case deliveryTimeMinutes = "delivery_time_minutes"
         case rating, name
     }
+    
+    enum OpenKeys: String, CodingKey {
+        case isOpen = "is_currently_open"
+    }
+        
 }
 
-
-/*
-struct Response: Codable {
-    var restaurants: [Restaurant]
-    
-}
-
-struct Restaurant: Identifiable, Codable {
-    
-    var image_url: String
-    var filterIds: [String]
-    var filters: [String]
-    var rating: Double
-    var name: String
-    var delivery_time_minutes: Int
-    var id: String
-    
-}
-*/

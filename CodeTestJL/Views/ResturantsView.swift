@@ -22,25 +22,46 @@ struct ResturantsView: View {
                                 Text(filter.name)
                             }.padding()
                                 .onTapGesture {
-                                    print("Applying filter = \(filter.name)")
+                                    print("Applying filter = \(filter.name), \(filter.id)")
+                                    vm.applyFilter(newFilter: filter)
                                 }
                         }
                     }
                 }
                 Spacer()
+                   
+                if vm.hasRestaurant {
+                    Text("")
+                        .task {
+                            await vm.getIsOpen()
+                        }
+                }
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
-                      
                         ForEach(vm.restaurants, id: \.self) { rest in
-                            ResturantRow(resturant: rest)
-                                .padding()
-                                .padding(.leading, 50)
-                                .padding(.trailing, 50)
+                            if vm.activeFilters.isEmpty {
+                                ResturantRow(resturant: rest)
+                                    .padding()
+                                    .padding(.leading, 50)
+                                    .padding(.trailing, 50)
+                            }
+                            else {
+                                ForEach(vm.activeFilters) { filter in
+                                    if rest.filterIDS.contains(filter.id) {
+                                        ResturantRow(resturant: rest)
+                                            .padding()
+                                            .padding(.leading, 50)
+                                            .padding(.trailing, 50)
+                                    }
+                                }
+                            }
+                            
                         }
                     }
                 }.task {
                    await vm.fetchRestaurants()
+                    
                 }
                 .navigationTitle(Text("U°"))
                 .navigationBarTitleDisplayMode(.large)

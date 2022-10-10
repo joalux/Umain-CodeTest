@@ -11,7 +11,7 @@ struct ResturantRow: View {
     
     let resturant: Restaurant
     
-    @State var rowHeight = 90.0
+    @State var rowHeight = 105.0
     @State var rowPadding = 40.0
     
     @State var showingDetail = false
@@ -21,6 +21,7 @@ struct ResturantRow: View {
                 ZStack {
                     
                     AsyncImage(url: URL(string: resturant.imageURL))
+                        .cornerRadius(20)
                         .onTapGesture {
                             print("Showing detail")
                             self.showingDetail.toggle()
@@ -28,9 +29,9 @@ struct ResturantRow: View {
                                 rowHeight = 150
                             }
                             else {
-                                rowHeight = 90
+                                rowHeight = 105
 
-                            }
+                            }                            
                         }
                     
                     VStack {
@@ -60,11 +61,12 @@ struct ResturantRow: View {
                     
                     HStack {
                         Text(resturant.name)
-                            .font(.system(size: 25, weight: .bold, design: .default))
+                            .font(.system(size: 23, weight: .semibold, design: .default))
                             .fontWeight(.semibold)
-                            .padding(.bottom, 5)
                         .padding(.top, 15)
                         Spacer()
+                        Text("⭐️\(resturant.rating, specifier: "%.1f")")
+                            .padding(.trailing)
                     }.padding(.leading)
                    
                     HStack {
@@ -79,8 +81,40 @@ struct ResturantRow: View {
                         }
                     
                     }.padding(.leading)
-                        .padding(.bottom)
-                    
+                    .padding(.bottom, 2)
+                    .onTapGesture {
+                        showingDetail.toggle()
+                        if showingDetail {
+                            rowHeight = 150
+                        }
+                        else {
+                            rowHeight = 105
+
+                        }  
+                    }
+
+                    if showingDetail == false {
+                        HStack {
+                            Text("🕐 \(resturant.deliveryTimeMinutes) min")
+                        }.padding(.leading)
+                        
+                       
+                    }
+                    else {
+                        if resturant.isOpen {
+                            Text("Open")
+                                .font(.title)
+                                .padding(.top)
+                                .padding(.leading)
+                                .foregroundColor(.green)
+                        } else {
+                            Text("Closed")
+                                .font(.title)
+                                .padding(.top)
+                                .padding(.leading)
+                                .foregroundColor(.red)
+                        }
+                    }
                     Spacer()
 
                 }
