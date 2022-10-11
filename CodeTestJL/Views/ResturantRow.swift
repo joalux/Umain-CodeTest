@@ -11,6 +11,8 @@ struct ResturantRow: View {
     
     let resturant: Restaurant
     
+    var filters: [Filter]
+    
     @State var rowHeight = 105.0
     @State var rowPadding = 40.0
     
@@ -60,6 +62,7 @@ struct ResturantRow: View {
                 VStack(alignment: .leading) {
                     
                     HStack {
+                        Text("\(resturant.filters.count)")
                         Text(resturant.name)
                             .font(.system(size: 23, weight: .semibold, design: .default))
                             .fontWeight(.semibold)
@@ -70,14 +73,13 @@ struct ResturantRow: View {
                     }.padding(.leading)
                    
                     HStack {
-                        ForEach(resturant.filterIDS, id: \.self) { filter in
-                            ForEach(ResturantViewModel().getFilters(), id: \.self) { vmFilter in
-                                if filter == vmFilter.id {
-                                    Text("\(vmFilter.name) •")
-                                        .foregroundColor(.gray)
-                                        .lineLimit(1)
-                                }
+                        ForEach(filters, id: \.self) { filter in
+                            if resturant.filterIDS.contains(filter.id) {
+                                Text("\(filter.name) •")
+                                    .foregroundColor(.gray)
+                                    .lineLimit(1)
                             }
+                            
                         }
                     
                     }.padding(.leading)

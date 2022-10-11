@@ -16,7 +16,7 @@ struct ResturantsView: View {
             VStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 5) {
-                        ForEach(vm.getFilters(), id: \.self) { filter in
+                        ForEach(vm.filters, id: \.self) { filter in
                             HStack {
                                 AsyncImage(url: URL(string: filter.image_url))
                                 Text(filter.name)
@@ -30,18 +30,28 @@ struct ResturantsView: View {
                 }
                 Spacer()
                    
-                if vm.hasRestaurant {
                     Text("")
                         .task {
+                            
+                            await vm.setResturants()
+                            /*
+                            await vm.fetchRestaurants()
+                            
                             await vm.getIsOpen()
+                            
+                            for resturant in vm.restaurants {
+                                for filterID in resturant.filterIDS {
+                                    await vm.fetchFilter(id: filterID)
+                                }
+                            }*/
                         }
-                }
+                
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
                         ForEach(vm.restaurants, id: \.self) { rest in
                             if vm.activeFilters.isEmpty {
-                                ResturantRow(resturant: rest)
+                                ResturantRow(resturant: rest, filters: vm.filters)
                                     .padding()
                                     .padding(.leading, 50)
                                     .padding(.trailing, 50)
@@ -49,7 +59,7 @@ struct ResturantsView: View {
                             else {
                                 ForEach(vm.activeFilters) { filter in
                                     if rest.filterIDS.contains(filter.id) {
-                                        ResturantRow(resturant: rest)
+                                        ResturantRow(resturant: rest, filters: vm.filters)
                                             .padding()
                                             .padding(.leading, 50)
                                             .padding(.trailing, 50)
@@ -59,9 +69,6 @@ struct ResturantsView: View {
                             
                         }
                     }
-                }.task {
-                   await vm.fetchRestaurants()
-                    
                 }
                 .navigationTitle(Text("U°"))
                 .navigationBarTitleDisplayMode(.large)

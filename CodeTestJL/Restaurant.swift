@@ -17,6 +17,7 @@ struct Restaurant: Codable, Hashable {
     var id: String
     let imageURL: String
     let filterIDS: [String]
+    var filters = [Filter]()
     let deliveryTimeMinutes: Int
     let rating: Double
     let name: String
@@ -32,6 +33,17 @@ struct Restaurant: Codable, Hashable {
     
     enum OpenKeys: String, CodingKey {
         case isOpen = "is_currently_open"
+    }
+    
+    func getFilter(filterID: String) -> Bool{
+        if filterIDS.contains(filterID) {
+            print("HAS FILTER!!")
+            return true
+        }
+        else {
+            return false
+        }
+        
     }
         
 }
