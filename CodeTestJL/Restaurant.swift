@@ -35,16 +35,7 @@ struct Restaurant: Codable, Hashable {
         case isOpen = "is_currently_open"
     }
     
-    func getFilter(filterID: String) -> Bool{
-        if filterIDS.contains(filterID) {
-            print("HAS FILTER!!")
-            return true
-        }
-        else {
-            return false
-        }
-        
-    }
+   
         
 }
 

@@ -43,31 +43,21 @@ class ResturantViewModel: ObservableObject {
                 guard let data = data else { return }
                 
                 DispatchQueue.main.async {
-                    print("GOT DATA == \(data)")
-                    if let stringData = String(data: data, encoding: .utf8) {
-                        print("String data == \(stringData)")
-                        print("_____________________________")
-                    }
+                  
                     do {
                         let decodedRestaurants = try JSONDecoder().decode(Restaurants.self, from: data)
-                        print("DECODE SUCCESS!!!")
-                        print(decodedRestaurants)
                         
                         self.restaurants = decodedRestaurants.restaurants
                         
-                        print("___GOT RESTAURANTS = \(self.restaurants.count)")
                         for restaurant in self.restaurants {
                             for filter in restaurant.filterIDS {
                                 if self.filterIDs.contains(filter) == false {
-                                    print("Adding new filter \(filter)")
                                     self.filterIDs.append(filter)
                                 }
                             }
                         }
                         self.hasRestaurants = true
-                        print("HAS RESTAURANTS!!!")
                         for filterID in self.filterIDs {
-                            print("ID = \(filterID)")
                             self.fetchFilter(id: filterID)
                         }
                         
@@ -82,9 +72,7 @@ class ResturantViewModel: ObservableObject {
     }
     
     func getIsOpen() async{
-        print("GETTING OPEN!!!!")
         for index in restaurants.indices {
-            print(restaurants[index].id)
             guard let url = URL(string: "https://restaurant-code-test.herokuapp.com/open/\(restaurants[index].id)") else {
                 print("Invalid url!")
                 return
@@ -155,16 +143,9 @@ class ResturantViewModel: ObservableObject {
                 guard let data = data else { return }
                 
                 DispatchQueue.main.async {
-                    print("GOT DATA == \(data.first)")
-                    if let stringData = String(data: data, encoding: .utf8) {
-                        print("String data == \(stringData)")
-                        print("_____________________________")
-                    
-                    }
+                 
                     do {
                         let decodedFilter = try JSONDecoder().decode(Filter.self, from: data)
-                        print("DECODE SUCCESS!!!")
-                        print(decodedFilter)
                         
                         if self.filters.contains(decodedFilter) == false {
                             print("Appending filter \(decodedFilter.name)")

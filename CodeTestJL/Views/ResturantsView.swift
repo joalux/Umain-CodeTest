@@ -30,22 +30,10 @@ struct ResturantsView: View {
                 }
                 Spacer()
                    
-                    Text("")
-                        .task {
-                            
-                            await vm.setResturants()
-                            /*
-                            await vm.fetchRestaurants()
-                            
-                            await vm.getIsOpen()
-                            
-                            for resturant in vm.restaurants {
-                                for filterID in resturant.filterIDS {
-                                    await vm.fetchFilter(id: filterID)
-                                }
-                            }*/
-                        }
-                
+                Text("")
+                    .task {
+                        await vm.setResturants()
+                    }
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
